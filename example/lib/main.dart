@@ -107,9 +107,8 @@ class _MyAppState extends State<MyApp> {
                           _error = error;
                         });
                       },
-                      child: Text(
+                      child: const Text(
                         "Generate Proof",
-                        style: Theme.of(context).textTheme.headlineLarge,
                       )),
                 ),
               ],

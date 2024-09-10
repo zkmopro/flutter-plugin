@@ -1,50 +1,104 @@
 # Cross-Platform Mobile ZKPs
 
-Flutter is a popular cross-platform mobile app development framework. Mopro Flutter shows an example of integrating the ZK-proving into a Flutter app, allowing to streamline the creation of ZK-enabled mobile apps.
+Flutter is a popular cross-platform mobile app development framework. Mopro Flutter shows an example of integrating ZK-proving into a Flutter app, allowing for streamlined creation of ZK-enabled mobile apps.
 
-# Running The Example App
+## Running The Example App
 
-- Open the project in VS Code
-- Open "Run and Debug"
-- Start an emulator (iOS/Android) or connect your phone
-- Select "example" in the run menu and press run
+### Prerequisites
 
-# Integrating Your ZKP
+1. **Install Flutter**
+
+   If Flutter is not already installed, you can follow the [official Flutter installation guide](https://docs.flutter.dev/get-started/install) for your operating system.
+
+2. **Check Flutter Environment**
+
+   After installing Flutter, verify that your development environment is properly set up by running the following command in your terminal:
+
+   ```bash
+   flutter doctor
+   ```
+
+   This command will identify any missing dependencies or required configurations.
+
+3. **Install Flutter Dependencies**
+
+   Navigate to the root directory of the project in your terminal and run:
+
+   ```bash
+   flutter pub get
+   ```
+
+   This will install the necessary dependencies for the project.
+
+### Running the App via VS Code
+
+1. Open the project in VS Code.
+2. Open the "Run and Debug" panel.
+3. Start an emulator (iOS/Android) or connect your physical device.
+4. Select "example" in the run menu and press "Run".
+
+### Running the App via Console
+
+If you prefer using the terminal to run the app, use the following steps:
+
+1. Navigate to the `example` directory of the project:
+
+   ```bash
+   cd example
+   ```
+
+2. For Android:
+
+   Ensure you have an Android emulator running or a device connected. Then run:
+
+   ```bash
+   flutter run
+   ```
+
+3. For iOS:
+
+   Make sure you have an iOS simulator running or a device connected. Then run:
+
+   ```bash
+   flutter run
+   ```
+
+## Integrating Your ZKP
 
 The example app comes with a simple prover generated from a Circom circuit. To integrate your own prover, follow the steps below.
 
-## Setup
+### Setup
 
-- Follow the [Rust Setup steps from the MoPro official docs](https://zkmopro.org/docs/getting-started/rust-setup) to generate the platform-specific libraries.
+Follow the [Rust Setup steps from the MoPro official docs](https://zkmopro.org/docs/getting-started/rust-setup) to generate the platform-specific libraries.
 
-## Copying The Generated Libraries
+### Copying The Generated Libraries
 
-### iOS
+#### iOS
 
-- Replace `mopro.swift` at [`ios/Classes/mopro.swift`](ios/Classes/mopro.swift) with the file generated during the [Setup](#setup)
-- Replace the directory [`ios/MoproBindings.xcframework`](ios/MoproBindings.xcframework) with the one generated during the [Setup](#setup)
+1. Replace `mopro.swift` at [`ios/Classes/mopro.swift`](ios/Classes/mopro.swift) with the file generated during the [Setup](#setup).
+2. Replace the directory [`ios/MoproBindings.xcframework`](ios/MoproBindings.xcframework) with the one generated during the [Setup](#setup).
 
-### Android
+#### Android
 
-- Replace the directory [`android/src/main/jniLibs`](android/src/main/jniLibs) with the one generated during the [Setup](#setup)
-- Replace `mopro.kt` at [`android/src/main/kotlin/uniffi/mopro/mopro.kt`](android/src/main/kotlin/uniffi/mopro/mopro.kt) with the file generated during the [Setup](#setup)
+1. Replace the directory [`android/src/main/jniLibs`](android/src/main/jniLibs) with the one generated during the [Setup](#setup).
+2. Replace `mopro.kt` at [`android/src/main/kotlin/uniffi/mopro/mopro.kt`](android/src/main/kotlin/uniffi/mopro/mopro.kt) with the file generated during the [Setup](#setup).
 
-## zKey
+### zKey
 
-- Put your zKey file in your app assets. For example, to run the included example app, you need to replace the zKey at [`example/assets/multiplier2_final.zkey`](example/assets/multiplier2_final.zkey) with your file. If you change the zKey file name, don't forget to change the asset definition in your app's `pubspec.yaml`. For example, here: [`example/pubspec.yaml`](example/pubspec.yaml)
+1. Place your `.zkey` file in your app's assets folder. For example, to run the included example app, you need to replace the `.zkey` at [`example/assets/multiplier2_final.zkey`](example/assets/multiplier2_final.zkey) with your file. If you change the `.zkey` file name, don't forget to update the asset definition in your app's [`pubspec.yaml`](example/pubspec.yaml):
 
-```yaml
-assets:
-  - assets/multiplier2_final.zkey
-```
+   ```yaml
+   assets:
+     - assets/your_new_zkey_file.zkey
+   ```
 
-If you have changed the zKey asset name, don't forget to also correctly load it. For example, here: [`example/lib/main.dart`](example/lib/main.dart)
+2. Load the new `.zkey` file properly in your Dart code. For example, update the file path in [`example/lib/main.dart`](example/lib/main.dart):
 
-```dart
-var inputs = <String, List<String>>{};
-inputs["a"] = ["3"];
-inputs["b"] = ["5"];
-proofResult = await _moproFlutterPlugin.generateProof("assets/multiplier2_final.zkey", inputs);
-```
+   ```dart
+   var inputs = <String, List<String>>{};
+   inputs["a"] = ["3"];
+   inputs["b"] = ["5"];
+   proofResult = await _moproFlutterPlugin.generateProof("assets/multiplier2_final.zkey", inputs);
+   ```
 
 Don't forget to modify the input values for your specific case!
